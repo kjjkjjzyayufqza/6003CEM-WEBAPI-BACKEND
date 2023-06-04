@@ -10,20 +10,4 @@ export class AppController {
     return res.redirect('/api');
   }
 
-
-  @Get('hello')
-  getHello(): string {
-    return this.appService.getHello();
-  }
-
-
-  @Get('/nihao')
-  getHello2(): string {
-    return '你好1';
-  }
-
-  @Get('/nihao3')
-  getHello3(): string {
-    return '你好3';
-  }
 }
