@@ -1,9 +1,3 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose'
-import { IsDate, IsEmail, IsObject } from 'class-validator'
-import mongoose, { HydratedDocument } from 'mongoose'
-
-export type UserBookingDocument = HydratedDocument<UserBooking>
-
 export enum RoleEnum {
   Admin = 'Admin',
   Staff = 'Staff',
@@ -69,42 +63,28 @@ export enum CatBreedEnum {
   TurkishVan = 'Turkish Van',
 }
 
-@Schema({ versionKey: false })
-export class UserBooking {
-  @Prop({ required: true })
-  nameEn: string
-
-  @Prop({ required: true })
-  nameCn: string
-
-  @Prop({ required: true, enum: GenderEnum })
-  gender: GenderEnum
-
-  @Prop({ required: true })
-  identityDN: string
-
-  @Prop({ required: true })
-  mobile: string
-
-  @Prop({ required: true })
-  @IsDate()
-  birthDate: Date
-
-  @Prop({ required: true })
-  address: string
-
-  @Prop({ required: true })
-  birthplace: string
-
-  @Prop({ required: true, enum: VaccineEnum })
-  vaccineBrand: VaccineEnum
-
-  @Prop(
-    raw({
-      id: { type: String },
-    }),
-  )
-  bookDate: Record<string, any>
+export enum CentreEnum {
+  KwunTong = 'KwunTong',
+  Central = 'Central',
+  CausewayBay = 'CausewayBay',
+  MongKok = 'MongKok',
+  WanChai = 'WanChai',
+  SheungWan = 'SheungWan',
+  Admiralty = 'Admiralty',
+  NorthPoint = 'NorthPoint',
+  QuarryBay = 'QuarryBay',
+  YauMaTei = 'YauMaTei',
 }
 
-export const UserBookingSchema = SchemaFactory.createForClass(UserBooking)
+export enum CentreCodeEnum {
+  KwunTong = 'cW1LdC4m',
+  Central = 'dE2FfB9p',
+  CausewayBay = 'bA7JgH5n',
+  MongKok = 'aI3KlE8o',
+  WanChai = 'fG5ShJ7q',
+  SheungWan = 'gF2HrN1m',
+  Admiralty = 'eX9JcD4p',
+  NorthPoint = 'hL6KmW3s',
+  QuarryBay = 'iV8NfT2r',
+  YauMaTei = 'jU1PqB5n',
+}

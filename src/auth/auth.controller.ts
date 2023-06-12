@@ -4,18 +4,23 @@ import {
   Get,
   HttpCode,
   HttpStatus,
+  Param,
   Post,
   Req,
   Request,
   UseGuards,
 } from '@nestjs/common'
 import { AuthService } from './auth.service'
-import { ApiBearerAuth, ApiOAuth2, ApiTags } from '@nestjs/swagger'
+import { ApiBearerAuth, ApiOAuth2, ApiParam, ApiTags } from '@nestjs/swagger'
 import { AuthDto, AuthRefreshDto } from './dto/index.dto'
 import { CreateUserDto, UserDto } from 'src/users/dto/index.dto'
 import { AccessTokenGuard } from 'src/common/guards/accessToken.guard'
 import { AuthGuard } from './auth.guard'
-import { CreateStaffUserDto } from 'src/staff-user/dto/create-staff-user.dto'
+import {
+  CreateStaffUserDto,
+  CreateStaffUserNoCentreDto,
+} from 'src/staff-user/dto/create-staff-user.dto'
+import { CentreCodeEnum } from 'src/interfaces/interface'
 
 @Controller('auth')
 @ApiTags('authentication')
@@ -31,9 +36,17 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('RegisterStaff')
-  register (@Body() createStaffUserDto: CreateStaffUserDto) {
-    return this.authService.signUpStaff(createStaffUserDto)
+  @Post('RegisterStaff:code')
+  @ApiParam({
+    name: 'code',
+    type: String,
+    required: true,
+  })
+  register (
+    @Param('code') code: string,
+    @Body() createStaffUserDto: CreateStaffUserNoCentreDto,
+  ) {
+    return this.authService.signUpStaff(code, createStaffUserDto)
   }
 
   @HttpCode(HttpStatus.OK)

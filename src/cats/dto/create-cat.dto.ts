@@ -1,16 +1,17 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { IsBoolean, IsDate } from 'class-validator'
+import { ApiProperty, PartialType } from '@nestjs/swagger'
+import { IsBoolean, IsDate, IsEnum } from 'class-validator'
 import * as moment from 'moment'
-import { CatBreedEnum, GenderEnum } from 'src/userBooking/userBookingschema'
+import { CatBreedEnum, CentreEnum, GenderEnum } from 'src/interfaces/interface'
 
 export class CreateCatDto {
-  @ApiProperty({ required: true, default: 'Mi' })
+  @ApiProperty({ required: true, default: 'jojo' })
   name: string
 
-  @ApiProperty({ required: true, default: '1' })
-  age: string
+  @ApiProperty({ required: true, default: moment().format() })
+  birthday: Date
 
   @ApiProperty({ required: true, enum: GenderEnum, default: GenderEnum.Male })
+  @IsEnum(GenderEnum)
   gender: GenderEnum
 
   @ApiProperty({
@@ -18,6 +19,7 @@ export class CreateCatDto {
     enum: CatBreedEnum,
     default: CatBreedEnum.Abyssinian,
   })
+  @IsEnum(CatBreedEnum)
   breed: CatBreedEnum
 
   @ApiProperty({
@@ -26,15 +28,28 @@ export class CreateCatDto {
   })
   photo: string
 
+  @ApiProperty({
+    required: true,
+  })
+  about: string
+
+  @ApiProperty({
+    required: true,
+    enum: CentreEnum,
+    default: CentreEnum.KwunTong,
+  })
+  @IsEnum(CentreEnum)
+  centre: CentreEnum
+
   @ApiProperty({ required: true, default: false })
   @IsBoolean()
   adopted: boolean
 
   @ApiProperty({ required: true, default: moment().format() })
-  @IsDate()
   addedTime: Date
 
   @ApiProperty({ required: true, default: moment().format() })
-  @IsDate()
   updatedTime: Date
 }
+
+export class UpdateCatDto extends PartialType(CreateCatDto) {}

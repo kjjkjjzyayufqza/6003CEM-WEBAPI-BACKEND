@@ -10,7 +10,7 @@ import {
 } from './dto/index.dto'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
-import { UserBooking } from './userBookingschema'
+import { UserBooking } from './userBooking.schema'
 import * as CryptoJS from 'crypto-js'
 
 @Injectable()

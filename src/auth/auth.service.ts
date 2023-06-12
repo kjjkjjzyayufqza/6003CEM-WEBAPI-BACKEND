@@ -10,17 +10,22 @@ import { CreateUserDto, UserDto } from 'src/users/dto/index.dto'
 import { ConfigService } from '@nestjs/config'
 import { AuthDto } from './dto/index.dto'
 import { StaffUserService } from 'src/staff-user/staff-user.service'
-import { CreateStaffUserDto } from 'src/staff-user/dto/create-staff-user.dto'
+import {
+  CreateStaffUserDto,
+  CreateStaffUserNoCentreDto,
+  StaffUserDto,
+} from 'src/staff-user/dto/create-staff-user.dto'
+import { CentreCodeEnum, CentreEnum } from 'src/interfaces/interface'
 @Injectable()
 export class AuthService {
-  constructor (
+  constructor(
     private usersService: UsersService,
     private staffUsersService: StaffUserService,
     private jwtService: JwtService,
     private configService: ConfigService,
   ) {}
 
-  async signIn (data: AuthDto) {
+  async signIn(data: AuthDto) {
     // Check if user exists
     const user = await this.usersService.findByUserEmail(data.email)
     if (!user) {
@@ -34,7 +39,7 @@ export class AuthService {
     return tokens
   }
 
-  async signUp (createUserDto: CreateUserDto) {
+  async signUp(createUserDto: CreateUserDto) {
     // Check if user exists
     const userExists = await this.usersService.findByUserEmail(
       createUserDto.email,
@@ -52,29 +57,38 @@ export class AuthService {
     return tokens
   }
 
-  async signUpStaff (createUserDto: CreateStaffUserDto) {
-    // Check if user exists
-    const userExists = await this.staffUsersService.findByUserEmailStaff(
-      createUserDto.email,
-    )
-    if (userExists) {
-      throw new BadRequestException('User already exists')
-    }
-    // Hash password
-    const newUser = await this.staffUsersService.createStaff({
-      ...createUserDto,
-    })
+  async signUpStaff(code: string, createUserDto: CreateStaffUserNoCentreDto) {
+    if ((<any>Object).values(CentreCodeEnum).includes(code)) {
+      const centre = Object.keys(CentreCodeEnum).find(
+        key => CentreCodeEnum[key] === code,
+      )
+      const userExists = await this.staffUsersService.findByUserEmailStaff(
+        createUserDto.email,
+      )
+      if (userExists) {
+        throw new BadRequestException('User already exists')
+      }
 
-    const tokens = await this.getTokensStaff(newUser._id, newUser.email)
-    await this.signUpdateRefreshTokenStaff(newUser._id, tokens.refreshToken)
-    return tokens
+      const newUser = await this.staffUsersService.createStaff({
+        centre: CentreEnum[centre],
+        ...createUserDto,
+      })
+
+      const tokens = await this.getTokensStaff(newUser._id, newUser.email)
+      await this.signUpdateRefreshTokenStaff(newUser._id, tokens.refreshToken)
+      return tokens
+    } else {
+      throw new BadRequestException(
+        'Bad code, Please contact the administrator for the correct code.',
+      )
+    }
   }
 
-  async logout (userId: string) {
+  async logout(userId: string) {
     return this.usersService.update(userId, { refreshToken: null })
   }
 
-  async signUpdateRefreshToken (id: string, refreshToken: string) {
+  async signUpdateRefreshToken(id: string, refreshToken: string) {
     try {
       await this.usersService.update(id, {
         refreshToken: refreshToken,
@@ -84,7 +98,7 @@ export class AuthService {
     }
   }
 
-  async signUpdateRefreshTokenStaff (id: string, refreshToken: string) {
+  async signUpdateRefreshTokenStaff(id: string, refreshToken: string) {
     try {
       await this.staffUsersService.updateStaff(id, {
         refreshToken: refreshToken,
@@ -94,7 +108,7 @@ export class AuthService {
     }
   }
 
-  async updateRefreshToken (refreshToken: string) {
+  async updateRefreshToken(refreshToken: string) {
     try {
       const userData: any = await this.jwtService.verifyAsync(refreshToken, {})
       if (userData?.sub) {
@@ -116,7 +130,7 @@ export class AuthService {
     }
   }
 
-  async getTokens (userId: string, email: string) {
+  async getTokens(userId: string, email: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -146,7 +160,7 @@ export class AuthService {
     }
   }
 
-  async getTokensStaff (userId: string, email: string) {
+  async getTokensStaff(userId: string, email: string) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {

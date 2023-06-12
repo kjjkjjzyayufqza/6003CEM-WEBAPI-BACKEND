@@ -1,7 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
-import { IsEnum, IsInt, IsString, MaxLength, MinLength } from 'class-validator'
-import { GenderEnum, VaccineEnum } from '../userBookingschema'
-import { CreateBookingDateDto } from 'src/booking-date/dto/create-booking-date.dto'
+import { GenderEnum, VaccineEnum } from 'src/interfaces/interface'
 
 export class CreateUserBookingDto {
   @ApiProperty({ required: true })

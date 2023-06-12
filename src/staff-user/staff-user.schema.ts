@@ -1,8 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { IsEmail, IsEnum } from 'class-validator'
 import { Document } from 'mongoose'
-import { RoleEnum } from 'src/userBooking/userBookingschema'
-import { UserRole } from 'src/users/users.schema'
+import { CentreEnum, RoleEnum } from 'src/interfaces/interface'
 
 export type StaffUserDocument = StaffUser & Document
 
@@ -18,8 +17,8 @@ export class StaffUser {
   @Prop({ required: true })
   password: string
 
-  @Prop({ required: true })
-  photo: string
+  @Prop({ required: true, type: String, enum: CentreEnum })
+  centre: CentreEnum
 
   @Prop({ required: true, type: String, enum: RoleEnum })
   @IsEnum(RoleEnum)
