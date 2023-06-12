@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { IsEmail, IsEnum } from 'class-validator'
 import { Document } from 'mongoose'
-import { CentreEnum, RoleEnum } from 'src/interfaces/interface'
+import { CentreEnum, RoleEnum } from 'src/interfaces'
 
 export type StaffUserDocument = StaffUser & Document
 

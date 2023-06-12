@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { IsEmail } from 'class-validator'
-import { CentreEnum } from 'src/interfaces/interface'
+import { CentreEnum } from 'src/interfaces'
 import { UserRole } from 'src/users/users.schema'
 
 export class StaffUserDto {

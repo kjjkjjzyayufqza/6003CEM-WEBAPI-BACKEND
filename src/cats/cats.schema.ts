@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose'
 import { IsEmail, IsEnum } from 'class-validator'
 import { Document, HydratedDocument } from 'mongoose'
-import { CatBreedEnum, CentreEnum, GenderEnum } from 'src/interfaces/interface'
+import { CatBreedEnum, CentreEnum, GenderEnum } from 'src/interfaces'
 
 export type CatDocument = Cat & Document
 
