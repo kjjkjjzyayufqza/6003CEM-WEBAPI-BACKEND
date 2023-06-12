@@ -13,7 +13,7 @@ import { CatsService } from './cats.service'
 import { CreateCatDto, UpdateCatDto } from './dto/create-cat.dto'
 import { ApiQuery, ApiTags } from '@nestjs/swagger'
 import { CatDocument } from './cats.schema'
-import { CentreEnum } from 'src/index.interface'
+import { CentreEnum } from 'src/main2'
 
 @Controller('cats')
 @ApiTags('cats')

@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose'
 import { IsDate, IsEmail, IsObject } from 'class-validator'
 import mongoose, { HydratedDocument } from 'mongoose'
-import { GenderEnum, VaccineEnum } from 'src/index.interface'
+import { GenderEnum, VaccineEnum } from 'src/main2'
 
 export type UserBookingDocument = HydratedDocument<UserBooking>
 
