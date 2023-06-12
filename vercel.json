@@ -3,7 +3,7 @@
     "builds": [
         {
             "src": "src/main.ts",
-            "use": "@now/node"
+            "use": "@vercel/node"
         }
     ],
     "routes": [
@@ -12,5 +12,10 @@
             "dest": "src/main.ts",
             "methods": ["GET", "POST", "PUT", "PATCH", "DELETE"]
         }
-    ]
+    ],
+    "functions": {
+        "/": {
+          "includeFiles": "src/(.*)"
+        }
+      }
 }
