@@ -1,5 +1,5 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
-import { GenderEnum, VaccineEnum } from 'src/interfaces/index.interface'
+import { GenderEnum, VaccineEnum } from 'src/index.interface'
 
 export class CreateUserBookingDto {
   @ApiProperty({ required: true })
