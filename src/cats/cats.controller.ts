@@ -8,10 +8,11 @@ import {
   Delete,
   Query,
   Put,
+  ParseArrayPipe,
 } from '@nestjs/common'
 import { CatsService } from './cats.service'
 import { CreateCatDto, UpdateCatDto } from './dto/create-cat.dto'
-import { ApiQuery, ApiTags } from '@nestjs/swagger'
+import { ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { CatDocument } from './cats.schema'
 import { CentreEnum } from 'src/main2'
 
@@ -21,7 +22,11 @@ export class CatsController {
   constructor (private readonly catsService: CatsService) {}
 
   @Post()
-  create (@Body() createCatDto: CreateCatDto) {
+  @ApiBody({ type: [CreateCatDto] })
+  create (
+    @Body(new ParseArrayPipe({ items: CreateCatDto }))
+    createCatDto: CreateCatDto[],
+  ) {
     return this.catsService.create(createCatDto)
   }
 
@@ -46,13 +51,27 @@ export class CatsController {
     type: Boolean,
     required: false,
   })
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    required: false,
+    description: 'page',
+  })
+  @ApiQuery({
+    name: 'pageSize',
+    type: Number,
+    required: false,
+    description: 'each page size',
+  })
   findAll (
     @Query('id') id: String,
     @Query('name') name: String,
     @Query('centre') centre: CentreEnum,
     @Query('adopted') adopted: Boolean,
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 10,
   ): Promise<CatDocument[]> {
-    return this.catsService.find(id, name, centre, adopted)
+    return this.catsService.find(id, name, centre, adopted, page, pageSize)
   }
 
   @Put('/:id')

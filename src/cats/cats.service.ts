@@ -17,16 +17,38 @@ export class CatsService {
     private catModel: Model<Cat>,
   ) {}
 
-  async create (createCatDto: CreateCatDto): Promise<CatDocument> {
-    const createdCat = new this.catModel(createCatDto)
-    try {
-      return createdCat.save()
-    } catch (e) {
-      console.log(e)
+  // async create (createCatDto: CreateCatDto): Promise<CatDocument> {
+  //   const createdCat = new this.catModel(createCatDto)
+  //   try {
+  //     return createdCat.save()
+  //   } catch (e) {
+  //     console.log(e)
+  //   }
+  // }
+
+  async create (createCatDto: CreateCatDto[]): Promise<CatDocument[]> {
+    const createdCatArray = []
+
+    for (let i = 0; i < createCatDto.length; i++) {
+      const cat = createCatDto[i]
+      const createdCat = new this.catModel(cat)
+      const savedCat = await createdCat.save()
+      createdCatArray.push(savedCat)
     }
+    return createdCatArray
   }
 
-  async find (id, name, centre, adopted): Promise<CatDocument[]> {
+  async find (
+    id,
+    name,
+    centre,
+    adopted,
+    page,
+    pageSize,
+  ): Promise<CatDocument[]> {
+    const skip = (page - 1) * pageSize
+    const limit = pageSize
+
     let query = {
       _id: id ? { $in: [id] } : { $exists: true },
       name: name ? { $in: [name] } : { $exists: true },
@@ -34,7 +56,7 @@ export class CatsService {
       adopted: adopted ? { $in: [adopted] } : { $exists: true },
     }
 
-    return await this.catModel.find(query).exec()
+    return await this.catModel.find(query).skip(skip).limit(limit).exec()
   }
 
   async update (id: String, updateCatDto: UpdateCatDto): Promise<CatDocument> {

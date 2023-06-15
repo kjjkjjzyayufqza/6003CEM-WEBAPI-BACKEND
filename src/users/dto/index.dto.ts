@@ -1,12 +1,22 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
-import { IsEmail } from 'class-validator'
+import { IsEmail, MaxLength, MinLength } from 'class-validator'
+import moment from 'moment'
 
 export class UserDto {
   @ApiProperty({ required: true })
   name: string
 
   @ApiProperty({ required: true })
+  @IsEmail()
   email: string
+
+  @ApiProperty({ required: true })
+  @MaxLength(8)
+  @MinLength(8)
+  phone: string
+
+  @ApiProperty({ required: true })
+  birthday: Date
 
   @ApiProperty({ required: true })
   password: string
@@ -26,14 +36,19 @@ export class CreateUserDto {
   @IsEmail()
   email: string
 
+  @ApiProperty({ required: true, default: '12345678' })
+  @MaxLength(8)
+  @MinLength(8)
+  phone: string
+
+  @ApiProperty({ required: true, default: new Date() })
+  birthday: Date
+
   @ApiProperty({ required: true })
   password: string
 
-  @ApiProperty({ required: true })
+  @ApiProperty()
   photo: string
 }
 
-
-
 export class UpdateUserDto extends PartialType(UserDto) {}
-

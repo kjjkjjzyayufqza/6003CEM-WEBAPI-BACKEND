@@ -21,6 +21,8 @@ export class UsersService {
       _id: user._id,
       name: user.name,
       email: user.email,
+      photo: user.photo,
+      phone: user.phone,
     }
     return result
   }

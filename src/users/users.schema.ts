@@ -9,7 +9,6 @@ export enum UserRole {
   Admin = 'Admin',
 }
 
-
 @Schema({ versionKey: false })
 export class User {
   @Prop({ required: true })
@@ -20,9 +19,15 @@ export class User {
   email: string
 
   @Prop({ required: true })
-  password: string
+  birthday: Date
 
   @Prop({ required: true })
+  phone: string
+
+  @Prop({ required: true })
+  password: string
+
+  @Prop()
   photo: string
 
   @Prop()
