@@ -1,5 +1,11 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
-import { IsEmail, MaxLength, MinLength } from 'class-validator'
+import {
+  IsArray,
+  IsEmail,
+  IsString,
+  MaxLength,
+  MinLength,
+} from 'class-validator'
 import moment from 'moment'
 
 export class UserDto {
@@ -52,3 +58,28 @@ export class CreateUserDto {
 }
 
 export class UpdateUserDto extends PartialType(UserDto) {}
+
+export class FavouritesDto {
+  @ApiProperty({ required: true })
+  userId: string
+
+  @ApiProperty({
+    required: true,
+    type: [String],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  Favourites: String[]
+}
+
+export class CreateFavouritesDto {
+  @ApiProperty({
+    required: true,
+    type: [String],
+  })
+  @IsArray()
+  @IsString({ each: true })
+  Favourites: String[]
+}
+
+export class UpdateFavouritesDto extends PartialType(FavouritesDto) {}

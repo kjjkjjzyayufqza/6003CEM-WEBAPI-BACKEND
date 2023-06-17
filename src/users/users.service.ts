@@ -1,6 +1,21 @@
-import { BadRequestException, Injectable } from '@nestjs/common'
-import { CreateUserDto, UpdateUserDto } from './dto/index.dto'
-import { UserDocument, User, UserRole } from './users.schema'
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common'
+import {
+  CreateFavouritesDto,
+  CreateUserDto,
+  UpdateFavouritesDto,
+  UpdateUserDto,
+} from './dto/index.dto'
+import {
+  UserDocument,
+  User,
+  UserRole,
+  FavouritesDocument,
+  Favourites,
+} from './users.schema'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { JwtService } from '@nestjs/jwt'
@@ -9,10 +24,13 @@ import { JwtService } from '@nestjs/jwt'
 export class UsersService {
   constructor (
     @InjectModel(User.name) private userModel: Model<UserDocument>,
+    @InjectModel(Favourites.name)
+    private favouritesModel: Model<FavouritesDocument>,
     private jwtService: JwtService,
   ) {}
 
   async findCurrent (request) {
+    console.log(request.sub)
     const user = await this.userModel.findById(request.sub).exec()
     if (!user) {
       throw new BadRequestException('User Not Found')
@@ -77,5 +95,31 @@ export class UsersService {
     }
     // 如果token不存在或不符合标准，返回null
     return null
+  }
+
+  async getFavourites (request): Promise<FavouritesDocument> {
+    return this.favouritesModel.findOne({ userId: request.sub }).exec()
+  }
+
+  async addFavourites (
+    request: any,
+    createFavouritesDto: CreateFavouritesDto,
+  ): Promise<FavouritesDocument> {
+    let userFavourites: any = await this.favouritesModel
+      .findOne({ userId: request.sub })
+      .exec()
+    if (!userFavourites) {
+      const newItem = {
+        userId: request.sub,
+        ...createFavouritesDto,
+      }
+      const createdFavourites = new this.favouritesModel(newItem)
+      const result = await createdFavourites.save()
+      return result
+    } else {
+      // userFavourites.Favourites.push(...createFavouritesDto.Favourites)
+      userFavourites.Favourites = createFavouritesDto.Favourites
+      return userFavourites.save()
+    }
   }
 }

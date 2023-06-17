@@ -39,6 +39,20 @@ export class AuthService {
     return tokens
   }
 
+  async signInStaff(data: AuthDto) {
+    // Check if user exists
+    const user = await this.staffUsersService.findByUserEmailStaff(data.email)
+    if (!user) {
+      throw new BadRequestException('User does not exist')
+    }
+    if (user.password != data.password) {
+      throw new BadRequestException('Password is incorrect')
+    }
+
+    const tokens = await this.getTokensStaff(user._id, user.email, user.centre)
+    await this.signUpdateRefreshToken(user._id, tokens.refreshToken)
+    return tokens
+  }
 
   async signUp(createUserDto: CreateUserDto) {
     // Check if user exists
@@ -75,7 +89,11 @@ export class AuthService {
         ...createUserDto,
       })
 
-      const tokens = await this.getTokensStaff(newUser._id, newUser.email)
+      const tokens = await this.getTokensStaff(
+        newUser._id,
+        newUser.email,
+        CentreEnum[centre],
+      )
       await this.signUpdateRefreshTokenStaff(newUser._id, tokens.refreshToken)
       return tokens
     } else {
@@ -111,7 +129,9 @@ export class AuthService {
 
   async updateRefreshToken(refreshToken: string) {
     try {
-      const userData: any = await this.jwtService.verifyAsync(refreshToken, {})
+      const userData: any = await this.jwtService.verifyAsync(refreshToken, {
+        secret: process.env.JWT_SECRET,
+      })
       if (userData?.sub) {
         // Check if user exists
         const user = await this.usersService.findById(userData.sub)
@@ -127,6 +147,32 @@ export class AuthService {
         throw new BadRequestException('JWT ERROR')
       }
     } catch (error) {
+      console.log('hello')
+      throw new BadRequestException(String(error))
+    }
+  }
+
+  async updateRefreshTokenStaff(refreshToken: string) {
+    try {
+      const userData: any = await this.jwtService.verifyAsync(refreshToken, {
+        secret: process.env.STAFF_JWT_SECRET,
+      })
+      if (userData?.sub) {
+        // Check if user exists
+        const user = await this.usersService.findById(userData.sub)
+        if (!user) {
+          throw new BadRequestException('User does not exist')
+        }
+        const tokens = await this.getTokens(userData?.sub, userData?.email)
+        await this.usersService.update(userData?.sub, {
+          refreshToken: tokens.refreshToken,
+        })
+        return tokens
+      } else {
+        throw new BadRequestException('JWT ERROR')
+      }
+    } catch (error) {
+      console.log('hello')
       throw new BadRequestException(String(error))
     }
   }
@@ -161,11 +207,12 @@ export class AuthService {
     }
   }
 
-  async getTokensStaff(userId: string, email: string) {
+  async getTokensStaff(userId: string, email: string, centre: CentreEnum) {
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
           sub: userId,
+          centre: centre,
           email,
         },
         {
@@ -176,6 +223,7 @@ export class AuthService {
       this.jwtService.signAsync(
         {
           sub: userId,
+          centre: centre,
           email,
         },
         {

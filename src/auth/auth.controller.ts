@@ -58,13 +58,19 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('SignInStaff')
   SignIn (@Body() signInDto: AuthDto) {
-    return this.authService.signIn(signInDto)
+    return this.authService.signInStaff(signInDto)
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('Refresh')
-  refresh (@Body() refreshDto: AuthRefreshDto) {
+  @Post('RefreshPublic')
+  refreshPublic (@Body() refreshDto: AuthRefreshDto) {
     return this.authService.updateRefreshToken(refreshDto.refreshToken)
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Post('RefreshStaff')
+  refreshStaff (@Body() refreshDto: AuthRefreshDto) {
+    return this.authService.updateRefreshTokenStaff(refreshDto.refreshToken)
   }
 
   @Get('logout')

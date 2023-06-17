@@ -42,6 +42,7 @@ export class CatsService {
     id,
     name,
     centre,
+    gender,
     adopted,
     page,
     pageSize,
@@ -53,6 +54,7 @@ export class CatsService {
       _id: id ? { $in: [id] } : { $exists: true },
       name: name ? { $in: [name] } : { $exists: true },
       centre: centre ? { $in: [centre] } : { $exists: true },
+      gender: gender ? { $in: [gender] } : { $exists: true },
       adopted: adopted ? { $in: [adopted] } : { $exists: true },
     }
 

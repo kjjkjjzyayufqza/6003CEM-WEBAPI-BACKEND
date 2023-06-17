@@ -33,4 +33,32 @@ export class User {
   @Prop()
   refreshToken: string
 }
+
 export const UserSchema = SchemaFactory.createForClass(User)
+
+export type FavouritesDocument = Favourites & Document
+
+@Schema({
+  versionKey: false,
+  // toJSON: {
+  //   transform: function (doc, ret) {
+  //     delete ret._id
+  //     delete ret.__v
+  //     ret.Favourites = ret.Favourites && ret.Favourites.map(fav => fav.catId)
+  //   },
+  // },
+})
+export class Favourites {
+  @Prop({
+    required: true,
+  })
+  userId: string
+
+  @Prop({
+    required: true,
+    type: [String],
+  })
+  Favourites: string[]
+}
+
+export const FavouritesSchema = SchemaFactory.createForClass(Favourites)
