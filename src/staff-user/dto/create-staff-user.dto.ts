@@ -1,6 +1,6 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { IsEmail } from 'class-validator'
-import { CentreEnum } from 'src/main2'
+import { CentreEnum, GenderEnum } from 'src/main2'
 import { UserRole } from 'src/users/users.schema'
 
 export class StaffUserDto {
@@ -12,6 +12,9 @@ export class StaffUserDto {
 
   @ApiProperty({ required: true })
   password: string
+
+  @ApiProperty({ required: true, enum: GenderEnum, default: GenderEnum.Male })
+  gender: GenderEnum
 
   @ApiProperty({
     required: true,
@@ -42,6 +45,9 @@ export class CreateStaffUserDto {
   @ApiProperty({ required: true })
   password: string
 
+  @ApiProperty({ required: true, enum: GenderEnum, default: GenderEnum.Male })
+  gender: GenderEnum
+
   @ApiProperty({
     required: true,
     enum: CentreEnum,
@@ -64,6 +70,9 @@ export class CreateStaffUserNoCentreDto {
   @ApiProperty({ required: true, default: 'a@a.com' })
   @IsEmail()
   email: string
+
+  @ApiProperty({ required: true, enum: GenderEnum, default: GenderEnum.Male })
+  gender: GenderEnum
 
   @ApiProperty({ required: true })
   password: string

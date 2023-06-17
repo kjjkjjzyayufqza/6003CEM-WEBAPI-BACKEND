@@ -12,8 +12,12 @@ import {
 import { UsersService } from './users.service'
 import { ApiBearerAuth, ApiBody, ApiTags } from '@nestjs/swagger'
 import { AuthGuard } from 'src/auth/auth.guard'
-import { CreateFavouritesDto, UpdateFavouritesDto } from './dto/index.dto'
-import { FavouritesDocument } from './users.schema'
+import {
+  CreateFavouritesDto,
+  UpdateFavouritesDto,
+  UpdateUserDto,
+} from './dto/index.dto'
+import { FavouritesDocument, UserDocument } from './users.schema'
 
 @Controller('users')
 @ApiTags('user')
@@ -25,6 +29,16 @@ export class UsersController {
   @UseGuards(AuthGuard)
   findCurrentUser (@Req() request) {
     return this.usersService.findCurrent(request.user)
+  }
+
+  @Put('')
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  async update (
+    @Req() request,
+    @Body() updateUserDto: UpdateUserDto,
+  ): Promise<UserDocument> {
+    return await this.usersService.update(request.user.sub, updateUserDto)
   }
 
   @Get('Favourites')

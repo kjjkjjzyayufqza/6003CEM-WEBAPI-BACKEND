@@ -36,7 +36,7 @@ export class AuthController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @Post('RegisterStaff:code')
+  @Post('RegisterStaff/:code')
   @ApiParam({
     name: 'code',
     type: String,

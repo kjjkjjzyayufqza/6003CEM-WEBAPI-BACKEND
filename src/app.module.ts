@@ -11,6 +11,7 @@ import { UsersModule } from './users/users.module'
 import { JwtModule } from '@nestjs/jwt'
 import { CatsModule } from './cats/cats.module'
 import { StaffUserModule } from './staff-user/staff-user.module'
+import { NewsModule } from './news/news.module';
 
 @Module({
   imports: [
@@ -25,6 +26,7 @@ import { StaffUserModule } from './staff-user/staff-user.module'
     UsersModule,
     CatsModule,
     StaffUserModule,
+    NewsModule,
   ],
   controllers: [AppController, UserBookingController],
   providers: [AppService],

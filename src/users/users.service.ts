@@ -39,6 +39,8 @@ export class UsersService {
       _id: user._id,
       name: user.name,
       email: user.email,
+      birthday: user.birthday,
+      gender: user.gender,
       photo: user.photo,
       phone: user.phone,
     }

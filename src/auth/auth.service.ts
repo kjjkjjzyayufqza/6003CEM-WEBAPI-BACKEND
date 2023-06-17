@@ -147,7 +147,6 @@ export class AuthService {
         throw new BadRequestException('JWT ERROR')
       }
     } catch (error) {
-      console.log('hello')
       throw new BadRequestException(String(error))
     }
   }
@@ -159,12 +158,16 @@ export class AuthService {
       })
       if (userData?.sub) {
         // Check if user exists
-        const user = await this.usersService.findById(userData.sub)
+        const user = await this.staffUsersService.findById(userData.sub)
         if (!user) {
           throw new BadRequestException('User does not exist')
         }
-        const tokens = await this.getTokens(userData?.sub, userData?.email)
-        await this.usersService.update(userData?.sub, {
+        const tokens = await this.getTokensStaff(
+          userData?.sub,
+          userData?.email,
+          userData?.centre,
+        )
+        await this.staffUsersService.update(userData?.sub, {
           refreshToken: tokens.refreshToken,
         })
         return tokens
@@ -172,7 +175,7 @@ export class AuthService {
         throw new BadRequestException('JWT ERROR')
       }
     } catch (error) {
-      console.log('hello')
+      console.log('staff refresh error')
       throw new BadRequestException(String(error))
     }
   }

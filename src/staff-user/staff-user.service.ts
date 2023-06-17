@@ -15,6 +15,19 @@ export class StaffUserService {
     private staffUserModel: Model<StaffUserDocument>,
   ) {}
 
+  async findById (id: string): Promise<StaffUserDocument> {
+    return this.staffUserModel.findById(id)
+  }
+
+  async update (
+    id: string,
+    updateUserDto: UpdateStaffUserDto,
+  ): Promise<StaffUserDocument> {
+    return this.staffUserModel
+      .findByIdAndUpdate(id, updateUserDto, { new: true })
+      .exec()
+  }
+
   async findCurrentStaff (request) {
     const user = await this.staffUserModel.findById(request.sub).exec()
     if (!user) {

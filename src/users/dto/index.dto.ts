@@ -7,6 +7,7 @@ import {
   MinLength,
 } from 'class-validator'
 import moment from 'moment'
+import { GenderEnum } from 'src/main2'
 
 export class UserDto {
   @ApiProperty({ required: true })
@@ -23,6 +24,9 @@ export class UserDto {
 
   @ApiProperty({ required: true })
   birthday: Date
+
+  @ApiProperty({ required: true, enum: GenderEnum })
+  gender: GenderEnum
 
   @ApiProperty({ required: true })
   password: string
@@ -49,6 +53,9 @@ export class CreateUserDto {
 
   @ApiProperty({ required: true, default: new Date() })
   birthday: Date
+
+  @ApiProperty({ required: true, enum: GenderEnum, default: GenderEnum.Male })
+  gender: GenderEnum
 
   @ApiProperty({ required: true })
   password: string
