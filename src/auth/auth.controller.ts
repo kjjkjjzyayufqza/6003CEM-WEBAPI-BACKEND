@@ -20,7 +20,7 @@ import {
   CreateStaffUserDto,
   CreateStaffUserNoCentreDto,
 } from 'src/staff-user/dto/create-staff-user.dto'
-import { CentreCodeEnum } from 'src/main2'
+import { CentreCodeEnum } from 'src/model'
 
 @Controller('auth')
 @ApiTags('authentication')

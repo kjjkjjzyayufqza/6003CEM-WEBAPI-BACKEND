@@ -1,46 +1,32 @@
 import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose'
 import { IsDate, IsEmail, IsObject } from 'class-validator'
 import mongoose, { HydratedDocument } from 'mongoose'
-import { GenderEnum, VaccineEnum } from 'src/main2'
+import { CentreEnum, GenderEnum, VaccineEnum } from 'src/model'
 
 export type UserBookingDocument = HydratedDocument<UserBooking>
 
 @Schema({ versionKey: false })
 export class UserBooking {
   @Prop({ required: true })
-  nameEn: string
+  name: string
 
   @Prop({ required: true })
-  nameCn: string
+  email: string
 
   @Prop({ required: true, type: String, enum: GenderEnum })
   gender: GenderEnum
 
   @Prop({ required: true })
-  identityDN: string
+  phone: string
 
   @Prop({ required: true })
-  mobile: string
+  bookingTime: Date
+
+  @Prop({ required: true, type: String, enum: CentreEnum })
+  centre: CentreEnum
 
   @Prop({ required: true })
-  @IsDate()
-  birthDate: Date
-
-  @Prop({ required: true })
-  address: string
-
-  @Prop({ required: true })
-  birthplace: string
-
-  @Prop({ required: true, type: String, enum: VaccineEnum })
-  vaccineBrand: VaccineEnum
-
-  @Prop(
-    raw({
-      id: { type: String },
-    }),
-  )
-  bookDate: Record<string, any>
+  catId: string
 }
 
 export const UserBookingSchema = SchemaFactory.createForClass(UserBooking)

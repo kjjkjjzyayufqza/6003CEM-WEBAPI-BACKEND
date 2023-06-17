@@ -1,7 +1,7 @@
 import { ApiProperty, PartialType } from '@nestjs/swagger'
 import { IsBoolean, IsDate, IsEnum } from 'class-validator'
 import * as moment from 'moment'
-import { CatBreedEnum, CentreEnum, GenderEnum } from 'src/main2'
+import { CatBreedEnum, CentreEnum, GenderEnum } from 'src/model'
 
 export class CreateCatDto {
   @ApiProperty({ required: true, default: 'jojo' })

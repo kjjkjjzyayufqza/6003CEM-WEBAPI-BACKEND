@@ -1,3 +1,17 @@
+import { ApiProperty } from '@nestjs/swagger'
+import { User } from './users/users.schema'
+
+export class CustomResponse<T> {
+  @ApiProperty({ required: true })
+  data: T
+
+  @ApiProperty({ required: true })
+  message: string
+
+  @ApiProperty({ required: true })
+  statusCode: number
+}
+
 export enum RoleEnum {
   Admin = 'Admin',
   Staff = 'Staff',

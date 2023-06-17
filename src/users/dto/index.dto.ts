@@ -7,7 +7,7 @@ import {
   MinLength,
 } from 'class-validator'
 import moment from 'moment'
-import { GenderEnum } from 'src/main2'
+import { GenderEnum } from 'src/model'
 
 export class UserDto {
   @ApiProperty({ required: true })

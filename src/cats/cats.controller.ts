@@ -15,7 +15,7 @@ import { CatsService } from './cats.service'
 import { CreateCatDto, UpdateCatDto } from './dto/create-cat.dto'
 import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger'
 import { CatDocument } from './cats.schema'
-import { CentreEnum, GenderEnum } from 'src/main2'
+import { CentreEnum, GenderEnum } from 'src/model'
 import { StaffAuthGuard } from 'src/auth/staff-auth.guard'
 
 @Controller('cats')

@@ -15,7 +15,7 @@ import {
   CreateStaffUserNoCentreDto,
   StaffUserDto,
 } from 'src/staff-user/dto/create-staff-user.dto'
-import { CentreCodeEnum, CentreEnum } from 'src/main2'
+import { CentreCodeEnum, CentreEnum } from 'src/model'
 @Injectable()
 export class AuthService {
   constructor(
