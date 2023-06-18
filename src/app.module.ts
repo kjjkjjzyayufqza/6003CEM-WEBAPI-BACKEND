@@ -11,7 +11,8 @@ import { UsersModule } from './users/users.module'
 import { JwtModule } from '@nestjs/jwt'
 import { CatsModule } from './cats/cats.module'
 import { StaffUserModule } from './staff-user/staff-user.module'
-import { NewsModule } from './news/news.module';
+import { NewsModule } from './news/news.module'
+import { EventsGateway } from './events/events.gateway'
 
 @Module({
   imports: [
@@ -29,6 +30,6 @@ import { NewsModule } from './news/news.module';
     NewsModule,
   ],
   controllers: [AppController, UserBookingController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {}

@@ -7,7 +7,6 @@ import { CreateUserBookingDto, UpdateUserDto } from './dto/index.dto'
 import { InjectModel } from '@nestjs/mongoose'
 import { Model } from 'mongoose'
 import { UserBooking } from './userBooking.schema'
-import * as CryptoJS from 'crypto-js'
 
 @Injectable()
 export class UserBookingService {
@@ -38,10 +37,10 @@ export class UserBookingService {
     }
   }
 
-  async findAll (mobile?: any): Promise<UserBooking[]> {
-    let query = {}
-    if (mobile) {
-      query = { mobile: { $in: [mobile] } }
+  async findAll (mobile?: string, centre?: string): Promise<UserBooking[]> {
+    let query = {
+      phone: mobile ? { $in: [mobile] } : { $exists: true },
+      centre: centre ? { $in: [centre] } : { $exists: true },
     }
     return await this.userBookingModel.find(query).exec()
   }

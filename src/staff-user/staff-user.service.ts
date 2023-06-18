@@ -27,6 +27,7 @@ export class StaffUserService {
       .findByIdAndUpdate(id, updateUserDto, { new: true })
       .exec()
   }
+  
 
   async findCurrentStaff (request) {
     const user = await this.staffUserModel.findById(request.sub).exec()
@@ -37,6 +38,8 @@ export class StaffUserService {
       _id: user._id,
       name: user.name,
       email: user.email,
+      centre: user.centre,
+      role: user.role,
     }
     return result
   }
