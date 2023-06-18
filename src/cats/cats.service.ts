@@ -46,7 +46,7 @@ export class CatsService {
     adopted,
     page,
     pageSize,
-  ): Promise<CatDocument[]> {
+  ): Promise<{ data: CatDocument[]; totalNumber: number }> {
     const skip = (page - 1) * pageSize
     const limit = pageSize
 
@@ -57,8 +57,9 @@ export class CatsService {
       gender: gender ? { $in: [gender] } : { $exists: true },
       adopted: adopted ? { $in: [adopted] } : { $exists: true },
     }
-
-    return await this.catModel.find(query).skip(skip).limit(limit).exec()
+    const data = await this.catModel.find(query).skip(skip).limit(limit).exec()
+    const totalNumber = await this.catModel.countDocuments()
+    return { data, totalNumber }
   }
 
   async update (id: String, updateCatDto: UpdateCatDto): Promise<CatDocument> {

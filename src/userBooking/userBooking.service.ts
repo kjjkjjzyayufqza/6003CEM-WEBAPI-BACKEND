@@ -37,11 +37,25 @@ export class UserBookingService {
     }
   }
 
-  async findAll (mobile?: string, centre?: string): Promise<UserBooking[]> {
+  async findAll (
+    mobile?: string,
+    centre?: string,
+    page?: number,
+    pageSize?: number,
+  ): Promise<{ data: UserBooking[]; totalNumber: number }> {
+    const skip = (page - 1) * pageSize
+    const limit = pageSize
+
     let query = {
       phone: mobile ? { $in: [mobile] } : { $exists: true },
       centre: centre ? { $in: [centre] } : { $exists: true },
     }
-    return await this.userBookingModel.find(query).exec()
+    const data = await this.userBookingModel
+      .find(query)
+      .skip(skip)
+      .limit(limit)
+      .exec()
+    const totalNumber = await this.userBookingModel.countDocuments()
+    return { data, totalNumber }
   }
 }

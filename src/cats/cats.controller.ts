@@ -13,9 +13,22 @@ import {
 } from '@nestjs/common'
 import { CatsService } from './cats.service'
 import { CreateCatDto, UpdateCatDto } from './dto/create-cat.dto'
-import { ApiBearerAuth, ApiBody, ApiQuery, ApiTags } from '@nestjs/swagger'
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiTags,
+} from '@nestjs/swagger'
 import { CatDocument } from './cats.schema'
-import { CentreEnum, GenderEnum } from 'src/model'
+import {
+  ApiBadResponseCustom,
+  ApiCreatedResponseCustom,
+  ApiOkResponseCustom,
+  ApiUnauthorizedResponseCustom,
+  CentreEnum,
+  GenderEnum,
+} from 'src/model'
 import { StaffAuthGuard } from 'src/auth/staff-auth.guard'
 
 @Controller('cats')
@@ -24,9 +37,13 @@ export class CatsController {
   constructor (private readonly catsService: CatsService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Create Cat' })
   @ApiBearerAuth()
   @UseGuards(StaffAuthGuard)
   @ApiBody({ type: [CreateCatDto] })
+  @ApiCreatedResponseCustom(CreateCatDto)
+  @ApiBadResponseCustom(CreateCatDto)
+  @ApiUnauthorizedResponseCustom(CreateCatDto)
   create (
     @Body(new ParseArrayPipe({ items: CreateCatDto }))
     createCatDto: CreateCatDto[],
@@ -35,6 +52,7 @@ export class CatsController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Find Cat By Query' })
   @ApiQuery({
     name: 'id',
     type: String,
@@ -67,6 +85,9 @@ export class CatsController {
     required: false,
     description: 'each page size',
   })
+  @ApiOkResponseCustom(CreateCatDto)
+  @ApiBadResponseCustom(CreateCatDto)
+  @ApiUnauthorizedResponseCustom(CreateCatDto)
   findAll (
     @Query('id') id: String,
     @Query('name') name: String,
@@ -75,7 +96,7 @@ export class CatsController {
     @Query('adopted') adopted: Boolean,
     @Query('page') page = 1,
     @Query('pageSize') pageSize = 10,
-  ): Promise<CatDocument[]> {
+  ): Promise<{ data: CatDocument[]; totalNumber: number }> {
     return this.catsService.find(
       id,
       name,
@@ -88,8 +109,12 @@ export class CatsController {
   }
 
   @Put('/:id')
+  @ApiOperation({ summary: 'Update Cat By Id' })
   @ApiBearerAuth()
   @UseGuards(StaffAuthGuard)
+  @ApiBadResponseCustom(CreateCatDto)
+  @ApiCreatedResponseCustom(CreateCatDto)
+  @ApiUnauthorizedResponseCustom(CreateCatDto)
   async update (
     @Param('id') id: string,
     @Body() updateCatDto: UpdateCatDto,
@@ -98,8 +123,12 @@ export class CatsController {
   }
 
   @Delete(':id')
+  @ApiOperation({ summary: 'Delete Cat By Id' })
   @ApiBearerAuth()
   @UseGuards(StaffAuthGuard)
+  @ApiOkResponseCustom(CreateCatDto)
+  @ApiBadResponseCustom(CreateCatDto)
+  @ApiUnauthorizedResponseCustom(CreateCatDto)
   remove (@Param('id') id: string) {
     return this.catsService.remove(id)
   }

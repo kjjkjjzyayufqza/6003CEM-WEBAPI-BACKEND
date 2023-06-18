@@ -1,14 +1,141 @@
-import { ApiProperty } from '@nestjs/swagger'
-import { User } from './users/users.schema'
+import { Type, applyDecorators } from '@nestjs/common'
+import {
+  ApiBadRequestResponse,
+  ApiCreatedResponse,
+  ApiExtraModels,
+  ApiOkResponse,
+  ApiProperty,
+  ApiUnauthorizedResponse,
+  getSchemaPath,
+} from '@nestjs/swagger'
 
-export class CustomResponse<T> {
-  @ApiProperty({ required: true })
+export const ApiOkResponseCustom = <DataDto extends Type<any>>(
+  dataDto: DataDto,
+) =>
+  applyDecorators(
+    ApiExtraModels(CustomOkResponse, dataDto),
+    ApiOkResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(CustomOkResponse) },
+          {
+            properties: {
+              data: {
+                type: 'array',
+                items: { $ref: getSchemaPath(dataDto) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  )
+
+export const ApiBadResponseCustom = <DataDto extends Type<unknown>>(
+  dataDto: DataDto,
+) =>
+  applyDecorators(
+    ApiExtraModels(CustomBadResponse, dataDto),
+    ApiBadRequestResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(CustomBadResponse) },
+          {
+            properties: {
+              data: {
+                items: { $ref: getSchemaPath(dataDto) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  )
+
+export const ApiCreatedResponseCustom = <DataDto extends Type<unknown>>(
+  dataDto: DataDto,
+) =>
+  applyDecorators(
+    ApiExtraModels(CustomCreatedResponse, dataDto),
+    ApiCreatedResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(CustomCreatedResponse) },
+          {
+            properties: {
+              data: {
+                type: 'array',
+                items: { $ref: getSchemaPath(dataDto) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  )
+
+export const ApiUnauthorizedResponseCustom = <DataDto extends Type<unknown>>(
+  dataDto: DataDto,
+) =>
+  applyDecorators(
+    ApiExtraModels(CustomUnauthorizedResponse, dataDto),
+    ApiUnauthorizedResponse({
+      schema: {
+        allOf: [
+          { $ref: getSchemaPath(CustomUnauthorizedResponse) },
+          {
+            properties: {
+              data: {
+                items: { $ref: getSchemaPath(dataDto) },
+              },
+            },
+          },
+        ],
+      },
+    }),
+  )
+
+export class CustomOkResponse<T> {
+  @ApiProperty()
   data: T
 
-  @ApiProperty({ required: true })
+  @ApiProperty()
+  message: boolean
+
+  @ApiProperty({ default: 200 })
+  statusCode: number = 200
+}
+
+export class CustomCreatedResponse<T> {
+  @ApiProperty()
+  data: T
+
+  @ApiProperty()
+  message: boolean
+
+  @ApiProperty({ default: 201 })
+  statusCode: number
+}
+
+export class CustomBadResponse<T> {
+  @ApiProperty({ default: {} })
+  data: T
+
+  @ApiProperty({ default: false })
+  message: boolean
+
+  @ApiProperty({ default: 400 })
+  statusCode: number
+}
+
+export class CustomUnauthorizedResponse<T> {
+  @ApiProperty({ default: {} })
+  data: {}
+
+  @ApiProperty({ default: 'Unauthorized' })
   message: string
 
-  @ApiProperty({ required: true })
+  @ApiProperty({ default: 401 })
   statusCode: number
 }
 

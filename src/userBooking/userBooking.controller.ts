@@ -22,14 +22,14 @@ import {
 } from '@nestjs/swagger'
 import { UserBookingService } from './userBooking.service'
 import { AuthGuard } from 'src/auth/auth.guard'
-import { UserBooking } from './userBooking.schema'
-import { CustomResponse } from 'src/model'
+import { UserBooking, UserBookingSchema } from './userBooking.schema'
 import { StaffAuthGuard } from 'src/auth/staff-auth.guard'
-
-export class a {
-  @ApiProperty({ required: true })
-  name: string
-}
+import {
+  ApiBadResponseCustom,
+  ApiCreatedResponseCustom,
+  ApiOkResponseCustom,
+  ApiUnauthorizedResponseCustom,
+} from 'src/model'
 
 @ApiTags('booking')
 @Controller('userBooking')
@@ -38,21 +38,24 @@ export class UserBookingController {
 
   @Post()
   @ApiOperation({ summary: 'Create User Booking' })
-  @ApiOkResponse({ type: CreateUserBookingDto })
-  @ApiBadRequestResponse({ type: CustomResponse<null> })
+  @ApiCreatedResponseCustom(CreateUserBookingDto)
+  @ApiBadResponseCustom(CreateUserBookingDto)
+  @ApiUnauthorizedResponseCustom(CreateUserBookingDto)
   create (@Body() createUserDto: CreateUserBookingDto): Promise<UserBooking> {
     return this.userBookingService.create(createUserDto)
   }
 
   @Put('/:id')
+  @ApiOperation({ summary: 'Update User Booking By Id' })
   @ApiBearerAuth()
   @UseGuards(StaffAuthGuard)
-  @ApiOkResponse({ type: CreateUserBookingDto })
-  @ApiBadRequestResponse({ type: CustomResponse<null> })
+  @ApiCreatedResponseCustom(CreateUserBookingDto)
+  @ApiBadResponseCustom(CreateUserBookingDto)
+  @ApiUnauthorizedResponseCustom(CreateUserBookingDto)
   async updateUserBooking (
     @Param('id') userId: string,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
+  ): Promise<UserBooking> {
     const existingUB = await this.userBookingService.updateStudent(
       userId,
       updateUserDto,
@@ -61,6 +64,7 @@ export class UserBookingController {
   }
 
   @Get()
+  @ApiOperation({ summary: 'Create User Booking By Query' })
   @ApiBearerAuth()
   @UseGuards(StaffAuthGuard)
   @ApiQuery({
@@ -73,19 +77,38 @@ export class UserBookingController {
     type: String,
     required: false,
   })
-  @ApiOkResponse({ type: CreateUserBookingDto })
-  @ApiBadRequestResponse({ type: CustomResponse<null> })
-  findAll (@Query('mobile') mobile: string, @Query('centre') centre: string) {
-    return this.userBookingService.findAll(mobile, centre)
+  @ApiQuery({
+    name: 'page',
+    type: Number,
+    required: false,
+    description: 'page',
+  })
+  @ApiQuery({
+    name: 'pageSize',
+    type: Number,
+    required: false,
+    description: 'each page size',
+  })
+  @ApiOkResponseCustom(CreateUserBookingDto)
+  @ApiBadResponseCustom(CreateUserBookingDto)
+  @ApiUnauthorizedResponseCustom(CreateUserBookingDto)
+  findAll (
+    @Query('mobile') mobile: string,
+    @Query('centre') centre: string,
+    @Query('page') page = 1,
+    @Query('pageSize') pageSize = 10,
+  ): Promise<{ data: UserBooking[]; totalNumber: number }> {
+    return this.userBookingService.findAll(mobile, centre, page, pageSize)
   }
 
-  @Get(':id')
-  @ApiBearerAuth()
-  @UseGuards(StaffAuthGuard)
-  @ApiParam({ name: 'id', description: '', required: true })
-  @ApiOkResponse({ type: CreateUserBookingDto })
-  @ApiBadRequestResponse({ type: CustomResponse<null> })
-  findById (@Param('id') id: string) {
-    return this.userBookingService.findAll()
-  }
+  // @Get(':id')
+  // @ApiBearerAuth()
+  // @UseGuards(StaffAuthGuard)
+  // @ApiOkResponseCustom(CreateUserBookingDto)
+  // @ApiBadResponseCustom(CreateUserBookingDto)
+  // @ApiUnauthorizedResponseCustom(CreateUserBookingDto)
+  // @ApiParam({ name: 'id', description: '', required: true })
+  // findById (@Param('id') id: string) {
+  //   return this.userBookingService.findAll()
+  // }
 }
