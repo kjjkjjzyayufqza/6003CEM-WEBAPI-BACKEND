@@ -8,6 +8,9 @@ export type UserBookingDocument = HydratedDocument<UserBooking>
 @Schema({ versionKey: false })
 export class UserBooking {
   @Prop({ required: true })
+  userId: string
+
+  @Prop({ required: true })
   name: string
 
   @Prop({ required: true })

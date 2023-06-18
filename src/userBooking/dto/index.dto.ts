@@ -3,6 +3,9 @@ import { CentreEnum, GenderEnum } from 'src/model'
 
 export class CreateUserBookingDto {
   @ApiProperty({ required: true })
+  userId: string
+
+  @ApiProperty({ required: true })
   name: string
 
   @ApiProperty({ required: true })

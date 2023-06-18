@@ -55,7 +55,18 @@ export class UserBookingService {
       .skip(skip)
       .limit(limit)
       .exec()
-    const totalNumber = await this.userBookingModel.countDocuments()
+    const totalNumber = await this.userBookingModel.find(query).count()
     return { data, totalNumber }
+  }
+
+  async findCurrent (request): Promise<UserBooking[]> {
+    let query = {
+      userId: request.sub ? { $in: [request.sub] } : { $exists: true },
+    }
+    const user = await this.userBookingModel.find(query).exec()
+    if (!user) {
+      throw new BadRequestException('User Not Found')
+    }
+    return user
   }
 }

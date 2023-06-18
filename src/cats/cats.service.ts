@@ -41,6 +41,7 @@ export class CatsService {
   async find (
     id,
     name,
+    breed,
     centre,
     gender,
     adopted,
@@ -53,12 +54,13 @@ export class CatsService {
     let query = {
       _id: id ? { $in: [id] } : { $exists: true },
       name: name ? { $in: [name] } : { $exists: true },
+      breed: breed ? { $in: [breed] } : { $exists: true },
       centre: centre ? { $in: [centre] } : { $exists: true },
       gender: gender ? { $in: [gender] } : { $exists: true },
       adopted: adopted ? { $in: [adopted] } : { $exists: true },
     }
     const data = await this.catModel.find(query).skip(skip).limit(limit).exec()
-    const totalNumber = await this.catModel.countDocuments()
+    const totalNumber = await this.catModel.find(query).count()
     return { data, totalNumber }
   }
 

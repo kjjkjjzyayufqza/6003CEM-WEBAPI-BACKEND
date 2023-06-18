@@ -26,6 +26,7 @@ import {
   ApiCreatedResponseCustom,
   ApiOkResponseCustom,
   ApiUnauthorizedResponseCustom,
+  CatBreedEnum,
   CentreEnum,
   GenderEnum,
 } from 'src/model'
@@ -64,6 +65,11 @@ export class CatsController {
     required: false,
   })
   @ApiQuery({
+    name: 'breed',
+    enum: CatBreedEnum,
+    required: false,
+  })
+  @ApiQuery({
     name: 'centre',
     enum: CentreEnum,
     required: false,
@@ -91,6 +97,7 @@ export class CatsController {
   findAll (
     @Query('id') id: String,
     @Query('name') name: String,
+    @Query('breed') breed: CatBreedEnum,
     @Query('centre') centre: CentreEnum,
     @Query('gender') gender: GenderEnum,
     @Query('adopted') adopted: Boolean,
@@ -100,6 +107,7 @@ export class CatsController {
     return this.catsService.find(
       id,
       name,
+      breed,
       centre,
       gender,
       adopted,

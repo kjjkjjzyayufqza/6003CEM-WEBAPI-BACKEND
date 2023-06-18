@@ -7,6 +7,7 @@ import {
   Put,
   UseGuards,
   Query,
+  Req,
 } from '@nestjs/common'
 import { CreateUserBookingDto, UpdateUserDto } from './dto/index.dto'
 import {
@@ -61,6 +62,17 @@ export class UserBookingController {
       updateUserDto,
     )
     return existingUB
+  }
+
+  @Get('User')
+  @ApiOperation({ summary: 'Get User Booking By Current' })
+  @ApiBearerAuth()
+  @UseGuards(AuthGuard)
+  @ApiOkResponseCustom(CreateUserBookingDto)
+  @ApiBadResponseCustom(CreateUserBookingDto)
+  @ApiUnauthorizedResponseCustom(CreateUserBookingDto)
+  findCurrent (@Req() request): Promise<UserBooking[]> {
+    return this.userBookingService.findCurrent(request.user)
   }
 
   @Get()
