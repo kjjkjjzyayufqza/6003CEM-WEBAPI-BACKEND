@@ -75,6 +75,11 @@ export class CatsController {
     required: false,
   })
   @ApiQuery({
+    name: 'gender',
+    enum: GenderEnum,
+    required: false,
+  })
+  @ApiQuery({
     name: 'adopted',
     type: Boolean,
     required: false,

@@ -9,12 +9,15 @@ import { Cat, CatDocument } from './cats.schema'
 import { Model } from 'mongoose'
 import { validate } from 'class-validator'
 import { plainToClass } from 'class-transformer'
+import { News } from 'src/news/news.schema'
 
 @Injectable()
 export class CatsService {
   constructor (
     @InjectModel(Cat.name)
     private catModel: Model<Cat>,
+    @InjectModel(News.name)
+    private newsModel: Model<News>,
   ) {}
 
   // async create (createCatDto: CreateCatDto): Promise<CatDocument> {
@@ -85,6 +88,7 @@ export class CatsService {
   async remove (id: String) {
     if (id.match(/^[0-9a-fA-F]{24}$/)) {
       const existingStudent = await this.catModel.deleteOne({ _id: id })
+      const deleteNews = await this.newsModel.deleteMany({ catId: id })
       if (!existingStudent) {
         throw new NotFoundException(`id #${id} not found`)
       }
