@@ -1,75 +1,63 @@
-## LIVE https://vtc6005cem-security-backend.azurewebsites.net/
+<div align="center">
+  <a href="https://6003-cem-webapi-frontend.vercel.app/">
+    <img alt="Precedent – Building blocks for your Next project" src="https://camo.githubusercontent.com/5f54c0817521724a2deae8dedf0c280a589fd0aa9bffd7f19fa6254bb52e996a/68747470733a2f2f6e6573746a732e636f6d2f696d672f6c6f676f2d736d616c6c2e737667" height="200">
+    <h1 align="center">6003-CEM-WEBAPI <br />BACKEND PROJECT</h1>
+  </a>
+</div>
 
 <p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+  Live Demo
 </p>
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+<p align="center">
+  <a href="https://6003-cem-webapi-frontend.vercel.app/"><strong>Demo</strong></a>
+  <br />
+  OR
+  <br />
+  <a href="https://6003-cem-webapi-frontend.vercel.app/"><strong>https://6003-cem-webapi-frontend.vercel.app/</strong></a>
 </p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+<br/>
 
-## Description
+## Introduction
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This is a web application for matching shelter cats with new owners. It also comes with back office management. Frontend using Nest.js [Github](https://github.com/kjjkjjzyayufqza/6003CEM-WEBAPI-FRONTEND).
 
-## Installation
-
-```bash
-$ npm install
-```
-
-## Running the app
+## How to run
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+npm i
 ```
-
-## Test
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+npm start
 ```
 
-## Support
+## Features
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+- **Authentication management** : The JWT token is used globally for authentication, and has both accessToken and refreshToken, and also supports refreshToken for refresh.
 
-## Stay in touch
+- **Cats** : Use filters (breed, name, adopted or not) to show cats. Staff can create, edit, delete cats.
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+- **News** : Create a News.
 
-## License
+- **Membership** : Available for registered users and staff (code required).
 
-Nest is [MIT licensed](LICENSE).
+- **Favorites** : Registered users can add any favorite cats to their list and also support editing.
+
+- **Reservation** : Registered users can make an appointment to meet with a specified cat at the shelter. At the same time, you can view the past appointment records on the webpage.
+
+- **Appointment** : Create/Edit/Delete Appointment.
+
+### Frameworks
+
+- [Nest.js](https://github.com/nestjs/nest) – A progressive Node.js framework for building efficient and scalable server-side applications.
+
+## Author
+
+- Moovoo ([@Moovoo](https://github.com/kjjkjjzyayufqza))
+
+## Screen
+
+<img alt="Precedent – Building blocks for your Next project" src="screen1.png">
+
+<img alt="Precedent – Building blocks for your Next project" src="screen2.png">
