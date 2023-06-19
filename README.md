@@ -10,17 +10,17 @@
 </p>
 
 <p align="center">
-  <a href="https://6003-cem-webapi-frontend.vercel.app/"><strong>Demo</strong></a>
+  <a href="https://6003cem-webapi-backend.azurewebsites.net/"><strong>Demo</strong></a>
   <br />
   OR
   <br />
-  <a href="https://6003-cem-webapi-frontend.vercel.app/"><strong>https://6003-cem-webapi-frontend.vercel.app/</strong></a>
+  <a href="https://6003cem-webapi-backend.azurewebsites.net/"><strong>https://6003cem-webapi-backend.azurewebsites.net/</strong></a>
 </p>
 <br/>
 
 ## Introduction
 
-This is a web application for matching shelter cats with new owners. It also comes with back office management. Frontend using Nest.js [Github](https://github.com/kjjkjjzyayufqza/6003CEM-WEBAPI-FRONTEND).
+This is a web application for matching shelter cats with new owners. It also comes with back office management. Frontend using Next.js [Github](https://github.com/kjjkjjzyayufqza/6003CEM-WEBAPI-FRONTEND).
 
 ## How to run
 
